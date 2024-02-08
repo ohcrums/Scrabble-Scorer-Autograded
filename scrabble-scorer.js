@@ -39,17 +39,25 @@ function oldScrabbleScorer(word) {
 // don't change the names or your program won't work as expected. //
 
 function initialPrompt() {
-   // ask for word input
-   const word = ( input.question ("Let's play some scrabble! Enter a word:") );
+   // declare word 
+  let word = '';
+  // make sure word is not a number. will think about how to prevent symbols and whitespace later.
+  while ( (word === '') || !isNaN(word) ){
+      word = input.question ( "Let's play some scrabble! Enter a word:" );
+  }
    // call to function with user word, print result
    console.log( vowelBonusScorer(word) );
 };
 
 let simpleScorer = function (word) { 
+   // case insensitive
    word = word.toUpperCase();
+   // declare output variable
    let letterPoints = 0;
 
+   // loop for word length
    for (let i = 0; i < word.length; i++) {
+      // add 1 to letterpoints for each loop, 1 per letter
       letterPoints ++; 
       console.log ( `Simple scores 1 point for '${word[i]}'` );
    }
@@ -57,87 +65,67 @@ let simpleScorer = function (word) {
    return letterPoints;
 };
 
-let vowelBonusScorer1 = function (word) {
-   // case insensitive
-   word = word.toUpperCase();
-   let letterPoints = 0;
-   // declare local score array
-   let scorerArr = {
-      1: ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Z'],
-      3: [ 'A', 'E', 'I', 'O', 'U', 'Y'],
-   };
-   // break it down
-   letters = word.split('');
-   let conScore = 0;
-   let vowScore = 0;
-
-   // loop for length of word
-   for ( let i = 0; i < word.length; i++ ) {
-      for ( pointValue in scorerArr[1] ) {
-         if ( scorerArr[1][pointValue] === letters[i]) {
-            console.log ( ` letter ${letters[i]} is worth ${pointValue}`)
-            vowScore += 3
-            console.log(vowScore)
-         } else {
-            console.log ( ` letter ${letters[i]} is worth ${pointValue}`)
-
-            conScore += 1
-            console.log(conScore)
-         }
-         // if ( scorerArr[pointValue].includes(letters[i]) ) {
-         // }
-      }
-   }
-   letterPoints = vowScore + conScore
-   return letterPoints  
-}
-
 function vowelBonusScorer(word) {
 	word = word.toUpperCase();
+   // declare output, and some variables for counting score totals
 	let letterPoints = "";
    let conScore = 0;
    let vowScore = 0;
+   // local scoring array
    let scorerArr = {
       1: ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Z'],
       3: [ 'A', 'E', 'I', 'O', 'U', 'Y'],
    };
-
+   // loop for word length
 	for (let i = 0; i < word.length; i++) {
- 
+      // for...in loop. for each entry in the array, where pointValue is a string, either '1' or '3'
 	  for (const pointValue in scorerArr) {
- 
-		 if (scorerArr[pointValue].includes(word[i])) {
-         if (pointValue === '1') {
-            conScore += Number(pointValue);
-		   	letterPoints += `Points for '${word[i]}': ${pointValue}\n`
-		   } else if (pointValue === '3') {
-            vowScore += Number(pointValue);
-            letterPoints += `Points for '${word[i]}': ${pointValue}\n`
+      // if scorerArr[1] or if scorerArr[3] includes letter at word index (word[i]). 
+      // this deals with bad inputs for now. later, may add while loop to input to require string. 
+		   if (scorerArr[pointValue].includes(word[i])) {
+            // if the letter found is in subarray 1, add pointValue to the relavant subScore used later
+            if (pointValue === '1') {
+               conScore += Number(pointValue);
+               letterPoints += `Points for '${word[i]}': ${pointValue}\n`
+            } else if (pointValue === '3') {
+               vowScore += Number(pointValue);
+               letterPoints += `Points for '${word[i]}': ${pointValue}\n`
+            }
          }
-      }
-	  }
+	   }
 	}
+   // sum the two score values 
+   let totalScore = `Total Vowel Bonus Score: ${conScore + vowScore}`;
+   // concat the template literals
+   letterPoints += totalScore
 	return letterPoints;
  }
 
-
 let scrabbleScorer;
 
-const scoringAlgorithms = [];
+const scoringAlgorithms = [
+   {
+      name: 'Simple Score',
+      description: 'Each letter is worth 1 point',
+      scoringFunction: simpleScorer
+   },
+   {
+      name: 'Bonus Vowels',
+      description: 'Vowels are 3 pts, consonants are 1 pt.',
+      scoringFunction: vowelBonusScorer
+   },
+   {
+      name: 'Scrabble',
+      description: 'The traditional scoring algorithm.',
+      scoringFunction: oldScrabbleScorer
+   }
+];
 
 function scorerPrompt() {}
 
 function transform() {};
 
-let newPointStructure = {
-   1: ['B', 'C', 'D', 'F', '',],
-   // 2: [],
-   3: [ 'A', 'E', 'I', 'O', 'U', 'Y'],
-   // 4: [],
-   // 5: [],
-   // 8: [],
-   // 10: []
- };
+let newPointStructure;
 
 function runProgram() {
    initialPrompt();
