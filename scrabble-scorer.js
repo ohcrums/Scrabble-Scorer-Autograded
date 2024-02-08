@@ -42,7 +42,7 @@ function initialPrompt() {
    // ask for word input
    const word = ( input.question ("Let's play some scrabble! Enter a word:") );
    // call to function with user word, print result
-   console.log( simpleScorer(word) );
+   console.log( vowelBonusScorer(word) );
 };
 
 let simpleScorer = function (word) { 
@@ -50,14 +50,76 @@ let simpleScorer = function (word) {
    let letterPoints = 0;
 
    for (let i = 0; i < word.length; i++) {
-      letterPoints ++ 
-      console.log ( `Simple scores 1 point for '${word[i]}'` )
+      letterPoints ++; 
+      console.log ( `Simple scores 1 point for '${word[i]}'` );
    }
-   console.log ( `\nTotal Simple Score: ${letterPoints} for ${word}` )
+   console.log ( `\nTotal Simple Score: ${letterPoints} for ${word}` );
    return letterPoints;
+};
+
+let vowelBonusScorer1 = function (word) {
+   // case insensitive
+   word = word.toUpperCase();
+   let letterPoints = 0;
+   // declare local score array
+   let scorerArr = {
+      1: ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Z'],
+      3: [ 'A', 'E', 'I', 'O', 'U', 'Y'],
+   };
+   // break it down
+   letters = word.split('');
+   let conScore = 0;
+   let vowScore = 0;
+
+   // loop for length of word
+   for ( let i = 0; i < word.length; i++ ) {
+      for ( pointValue in scorerArr[1] ) {
+         if ( scorerArr[1][pointValue] === letters[i]) {
+            console.log ( ` letter ${letters[i]} is worth ${pointValue}`)
+            vowScore += 3
+            console.log(vowScore)
+         } else {
+            console.log ( ` letter ${letters[i]} is worth ${pointValue}`)
+
+            conScore += 1
+            console.log(conScore)
+         }
+         // if ( scorerArr[pointValue].includes(letters[i]) ) {
+         // }
+      }
+   }
+   letterPoints = vowScore + conScore
+   return letterPoints  
 }
 
-let vowelBonusScorer;
+function vowelBonusScorer(word) {
+	word = word.toUpperCase();
+	let letterPoints = "";
+   let conScore = 0;
+   let vowScore = 0;
+   let scorerArr = {
+      1: ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Z'],
+      3: [ 'A', 'E', 'I', 'O', 'U', 'Y'],
+   };
+
+	for (let i = 0; i < word.length; i++) {
+ 
+	  for (const pointValue in scorerArr) {
+ 
+		 if (scorerArr[pointValue].includes(word[i])) {
+         if (pointValue === '1') {
+            conScore += Number(pointValue);
+		   	letterPoints += `Points for '${word[i]}': ${pointValue}\n`
+		   } else if (pointValue === '3') {
+            vowScore += Number(pointValue);
+            letterPoints += `Points for '${word[i]}': ${pointValue}\n`
+         }
+      }
+	  }
+	}
+	return letterPoints;
+ }
+
 
 let scrabbleScorer;
 
