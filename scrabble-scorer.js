@@ -42,10 +42,20 @@ function initialPrompt() {
    // ask for word input
    const word = ( input.question ("Let's play some scrabble! Enter a word:") );
    // call to function with user word, print result
-   console.log( oldScrabbleScorer(word) );
+   console.log( simpleScorer(word) );
 };
 
-let simpleScorer;
+let simpleScorer = function (word) { 
+   word = word.toUpperCase();
+   let letterPoints = 0;
+
+   for (let i = 0; i < word.length; i++) {
+      letterPoints ++ 
+      console.log ( `Simple scores 1 point for '${word[i]}'` )
+   }
+   console.log ( `\nTotal Simple Score: ${letterPoints} for ${word}` )
+   return letterPoints;
+}
 
 let vowelBonusScorer;
 
@@ -57,7 +67,15 @@ function scorerPrompt() {}
 
 function transform() {};
 
-let newPointStructure;
+let newPointStructure = {
+   1: ['B', 'C', 'D', 'F', '',],
+   // 2: [],
+   3: [ 'A', 'E', 'I', 'O', 'U', 'Y'],
+   // 4: [],
+   // 5: [],
+   // 8: [],
+   // 10: []
+ };
 
 function runProgram() {
    initialPrompt();
