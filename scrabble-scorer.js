@@ -43,15 +43,14 @@ function initialPrompt() {
   let word = '';
   // make sure word is not a number. will think about how to prevent symbols and whitespace later.
   while ( (word === '') || !isNaN(word) ){
-      word = input.question ( "Let's play some scrabble! Enter a word:" );
+      word = input.question ( "Let's play some scrabble! \nEnter a word to score: " );
   }
    // call to function with user word, print result
-   console.log( vowelBonusScorer(word) );
+   // console.log( vowelBonusScorer(word) );
+   return word;
 };
 
 let simpleScorer = function (word) { 
-   // case insensitive
-   word = word.toUpperCase();
    // declare output variable
    let letterPoints = 0;
 
@@ -59,22 +58,24 @@ let simpleScorer = function (word) {
    for (let i = 0; i < word.length; i++) {
       // add 1 to letterpoints for each loop, 1 per letter
       letterPoints ++; 
-      console.log ( `Simple scores 1 point for '${word[i]}'` );
+
+      // no longer using
+      // console.log ( `Simple scores 1 point for '${word[i]}'` );
    }
-   console.log ( `\nTotal Simple Score: ${letterPoints} for ${word}` );
+   // this was used earlier and is now handled elsewhere
+   // console.log ( `\nTotal Simple Score: ${letterPoints} for ${word}` );
    return letterPoints;
 };
 
 function vowelBonusScorer(word) {
-	word = word.toUpperCase();
    // declare output, and some variables for counting score totals
 	let letterPoints = "";
    let conScore = 0;
    let vowScore = 0;
    // local scoring array
    let scorerArr = {
-      1: ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Z'],
-      3: [ 'A', 'E', 'I', 'O', 'U', 'Y'],
+      1: ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'],
+      3: [ 'A', 'E', 'I', 'O', 'U']
    };
    // loop for word length
 	for (let i = 0; i < word.length; i++) {
@@ -86,19 +87,19 @@ function vowelBonusScorer(word) {
             // if the letter found is in subarray 1, add pointValue to the relavant subScore used later
             if (pointValue === '1') {
                conScore += Number(pointValue);
-               letterPoints += `Points for '${word[i]}': ${pointValue}\n`
+               // letterPoints += `Points for '${word[i]}': ${pointValue}\n`
             } else if (pointValue === '3') {
                vowScore += Number(pointValue);
-               letterPoints += `Points for '${word[i]}': ${pointValue}\n`
+               // letterPoints += `Points for '${word[i]}': ${pointValue}\n`
             }
          }
 	   }
 	}
    // sum the two score values 
-   let totalScore = `Total Vowel Bonus Score: ${conScore + vowScore}`;
+   let totalScore = conScore + vowScore;
    // concat the template literals
-   letterPoints += totalScore
-	return letterPoints;
+   console.log(totalScore);
+	return totalScore;
  }
 
 let scrabbleScorer;
@@ -107,29 +108,71 @@ const scoringAlgorithms = [
    {
       name: 'Simple Score',
       description: 'Each letter is worth 1 point',
-      scoringFunction: simpleScorer
+      scorerFunction: simpleScorer
    },
    {
       name: 'Bonus Vowels',
       description: 'Vowels are 3 pts, consonants are 1 pt.',
-      scoringFunction: vowelBonusScorer
+      scorerFunction: vowelBonusScorer
    },
    {
       name: 'Scrabble',
       description: 'The traditional scoring algorithm.',
-      scoringFunction: oldScrabbleScorer
+      scorerFunction: oldScrabbleScorer
    }
 ];
 
-function scorerPrompt() {}
+function scorerPrompt() {
+  let algoChoice;
+  while ( algoChoice > 2 || algoChoice < 0 || isNaN(algoChoice) ) {
+    algoChoice = Number( input.question("\nWhich scoring algorithm would you like to use?\n0 - Simple: One point per character\n1 - Vowel Bonus: Vowels are worth 3 points\n2 - Scrabble: Uses scrabble point system\nEnter 0, 1, or 2: ") );
+  }
+  return algoChoice
+}
 
 function transform() {};
 
-let newPointStructure;
+let newPointStructure = {
+   // must remember .toUpperCase() always.
+   A: ['1'],
+   B: ['3'],
+   C: ['3'],
+   D: ['2'],
+   E: ['1'],
+   F: ['4'],
+   G: ['2'],
+   H: ['4'],
+   I: ['1'],
+   J: ['8'],
+   K: ['5'],
+   L: ['1'],
+   M: ['3'],
+   N: ['1'],
+   O: ['1'],
+   P: ['3'],
+   Q: ['10'],
+   R: ['1'],
+   S: ['1'],
+   T: ['1'],
+   U: ['1'],
+   V: ['4'],
+   W: ['4'],
+   X: ['8'],
+   Y: ['4'],
+   Z: ['10']
+};
 
 function runProgram() {
-   initialPrompt();
+   // call function to variable
+   let word = initialPrompt();
+   // call algorithm choice function
+   let algoChoice = scorerPrompt();
    
+   // state algo choice from object with dot notation
+   console.log( "\nAlgorithm choice: ", scoringAlgorithms[Number(algoChoice)].name );
+   // print score by calling to function with object dot notation
+   // also make case insensitive for all algos
+   console.log( `Score for '${word}': `, scoringAlgorithms[Number(algoChoice)].scorerFunction(word.toUpperCase()) );
 }
 
 // Don't write any code below this line //
