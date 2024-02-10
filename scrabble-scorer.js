@@ -77,6 +77,9 @@ function vowelBonusScorer(word) {
       1: ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'],
       3: [ 'A', 'E', 'I', 'O', 'U']
    };
+   // let vowels = 'aeiou'
+   // vowels.includes
+   
    // loop for word length
 	for (let i = 0; i < word.length; i++) {
       // for...in loop. for each entry in the array, where pointValue is a string, either '1' or '3'
@@ -98,11 +101,26 @@ function vowelBonusScorer(word) {
    // sum the two score values 
    let totalScore = conScore + vowScore;
    // concat the template literals
-   console.log(totalScore);
+   // console.log(totalScore);
 	return totalScore;
  }
 
-let scrabbleScorer;
+let scrabbleScorer = function(word) {
+   // word = word.toUpperCase();
+	let letterPoints = "";
+   let score = 0;
+ 
+	for (let i = 0; i < word.length; i++) {
+ 
+	  for (const letterKey in newPointStructure) {
+ 
+		 if (letterKey.includes(word[i])) {
+			score = Number(score) + Number(newPointStructure[letterKey]) 
+		 }
+	  }
+	}
+	return score;
+};
 
 const scoringAlgorithms = [
    {
@@ -118,7 +136,7 @@ const scoringAlgorithms = [
    {
       name: 'Scrabble',
       description: 'The traditional scoring algorithm.',
-      scorerFunction: oldScrabbleScorer
+      scorerFunction: scrabbleScorer
    }
 ];
 
@@ -130,37 +148,30 @@ function scorerPrompt() {
   return algoChoice
 }
 
-function transform() {};
 
-let newPointStructure = {
-   // must remember .toUpperCase() always.
-   A: ['1'],
-   B: ['3'],
-   C: ['3'],
-   D: ['2'],
-   E: ['1'],
-   F: ['4'],
-   G: ['2'],
-   H: ['4'],
-   I: ['1'],
-   J: ['8'],
-   K: ['5'],
-   L: ['1'],
-   M: ['3'],
-   N: ['1'],
-   O: ['1'],
-   P: ['3'],
-   Q: ['10'],
-   R: ['1'],
-   S: ['1'],
-   T: ['1'],
-   U: ['1'],
-   V: ['4'],
-   W: ['4'],
-   X: ['8'],
-   Y: ['4'],
-   Z: ['10']
+function transform(oldPointStructure) {
+   let newPointStructure = {};
+
+   // loop once for each key in og object
+      for (let key in oldPointStructure) {
+         let letters = oldPointStructure[key];
+         let newKey = '';
+
+         // loop once for each entry in the array of the current key
+         for (i = 0; i < letters.length; i++) {
+            newKey = letters[i]
+            newPointStructure[newKey] = key;
+         }
+      }
+   
+   // console.log(newPointStructure)
+   return newPointStructure;
 };
+transform; // for testing
+
+
+let newPointStructure = transform(oldPointStructure);
+   
 
 function runProgram() {
    // call function to variable
@@ -189,3 +200,33 @@ module.exports = {
 	runProgram: runProgram,
 	scorerPrompt: scorerPrompt
 };
+
+
+// must remember .toUpperCase() always.
+   // A: ['1'],
+   // B: ['3'],
+   // C: ['3'],
+   // D: ['2'],
+   // E: ['1'],
+   // F: ['4'],
+   // G: ['2'],
+   // H: ['4'],
+   // I: ['1'],
+   // J: ['8'],
+   // K: ['5'],
+   // L: ['1'],
+   // M: ['3'],
+   // N: ['1'],
+   // O: ['1'],
+   // P: ['3'],
+   // Q: ['10'],
+   // R: ['1'],
+   // S: ['1'],
+   // T: ['1'],
+   // U: ['1'],
+   // V: ['4'],
+   // W: ['4'],
+   // X: ['8'],
+   // Y: ['4'],
+   // Z: ['10']
+// };
