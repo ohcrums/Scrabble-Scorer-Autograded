@@ -64,39 +64,32 @@ let simpleScorer = function (word) {
 
 function vowelBonusScorer(word) {
    // declare output, and some variables for counting score totals
-	let letterPoints = "";
    let conScore = 0;
    let vowScore = 0;
    // local scoring array
    let scorerArr = {
-      1: ['B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'V', 'W', 'X', 'Y', 'Z'],
-      3: [ 'A', 'E', 'I', 'O', 'U']
+      1: ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z'],
+      3: [ 'a', 'e', 'i', 'o', 'u']
    };
-   // let vowels = 'aeiou'
-   // vowels.includes
    
    // loop for word length
 	for (let i = 0; i < word.length; i++) {
-      // for...in loop. for each entry in the array, where pointValue is a string, either '1' or '3'
-	  for (const pointValue in scorerArr) {
-      // if scorerArr[1] or if scorerArr[3] includes letter at word index (word[i]). 
-      // this deals with bad inputs for now. later, may add while loop to input to require string. 
+      for (const pointValue in scorerArr) {
+
 		   if (scorerArr[pointValue].includes(word[i])) {
-            // if the letter found is in subarray 1, add pointValue to the relavant subScore used later
+
             if (pointValue === '1') {
                conScore += Number(pointValue);
-               // letterPoints += `Points for '${word[i]}': ${pointValue}\n`
+
             } else if (pointValue === '3') {
                vowScore += Number(pointValue);
-               // letterPoints += `Points for '${word[i]}': ${pointValue}\n`
             }
          }
 	   }
 	}
    // sum the two score values 
    let totalScore = conScore + vowScore;
-
-   console.log(typeof totalScore, totalScore);
+   // console.log(typeof totalScore, totalScore);
 	return totalScore;
  }
 
@@ -159,7 +152,6 @@ function transform(oldPointStructure) {
             newKey = letters[i]
             newKey = newKey.toLowerCase()
             newPointStructure[newKey] = Number(key);
-            console.log(newKey)
          }
       }
    
