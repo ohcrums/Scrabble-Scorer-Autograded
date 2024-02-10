@@ -92,7 +92,7 @@ function vowelBonusScorer(word) {
    // console.log(typeof totalScore, totalScore);
 	return totalScore;
  }
-
+ 
 let scrabbleScorer = function(word) {
 	let letterPoints = "";
    let score = 0;
