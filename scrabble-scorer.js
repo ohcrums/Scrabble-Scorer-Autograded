@@ -19,7 +19,7 @@ const oldPointStructure = {
 };
 
 function oldScrabbleScorer(word) {
-	word = word.toUpperCase();
+	word = word.toLowerCase();
 	let letterPoints = "";
  
 	for (let i = 0; i < word.length; i++) {
@@ -58,12 +58,7 @@ let simpleScorer = function (word) {
    for (let i = 0; i < word.length; i++) {
       // add 1 to letterpoints for each loop, 1 per letter
       letterPoints ++; 
-
-      // no longer using
-      // console.log ( `Simple scores 1 point for '${word[i]}'` );
    }
-   // this was used earlier and is now handled elsewhere
-   // console.log ( `\nTotal Simple Score: ${letterPoints} for ${word}` );
    return letterPoints;
 };
 
@@ -100,13 +95,12 @@ function vowelBonusScorer(word) {
 	}
    // sum the two score values 
    let totalScore = conScore + vowScore;
-   // concat the template literals
-   // console.log(totalScore);
+
+   console.log(typeof totalScore, totalScore);
 	return totalScore;
  }
 
 let scrabbleScorer = function(word) {
-   // word = word.toUpperCase();
 	let letterPoints = "";
    let score = 0;
  
@@ -155,19 +149,24 @@ function transform(oldPointStructure) {
    // loop once for each key in og object
       for (let key in oldPointStructure) {
          let letters = oldPointStructure[key];
+
          let newKey = '';
 
          // loop once for each entry in the array of the current key
          for (i = 0; i < letters.length; i++) {
+            // console.log (typeof letters[i], letters[i])
+
             newKey = letters[i]
-            newPointStructure[newKey] = key;
+            newKey = newKey.toLowerCase()
+            newPointStructure[newKey] = Number(key);
+            console.log(newKey)
          }
       }
    
    // console.log(newPointStructure)
    return newPointStructure;
 };
-transform; // for testing
+// transform; // for testing
 
 
 let newPointStructure = transform(oldPointStructure);
@@ -178,12 +177,15 @@ function runProgram() {
    let word = initialPrompt();
    // call algorithm choice function
    let algoChoice = scorerPrompt();
-   
+
+   let algoName = scoringAlgorithms[Number(algoChoice)].name;
+   let scoreWord = scoringAlgorithms[Number(algoChoice)].scorerFunction(word.toLowerCase());
+
    // state algo choice from object with dot notation
-   console.log( "\nAlgorithm choice: ", scoringAlgorithms[Number(algoChoice)].name );
+   console.log( "\nAlgorithm choice: ", algoName );
    // print score by calling to function with object dot notation
    // also make case insensitive for all algos
-   console.log( `Score for '${word}': `, scoringAlgorithms[Number(algoChoice)].scorerFunction(word.toUpperCase()) );
+   console.log( `Score for '${word}': `, scoreWord );
 }
 
 // Don't write any code below this line //
@@ -201,32 +203,3 @@ module.exports = {
 	scorerPrompt: scorerPrompt
 };
 
-
-// must remember .toUpperCase() always.
-   // A: ['1'],
-   // B: ['3'],
-   // C: ['3'],
-   // D: ['2'],
-   // E: ['1'],
-   // F: ['4'],
-   // G: ['2'],
-   // H: ['4'],
-   // I: ['1'],
-   // J: ['8'],
-   // K: ['5'],
-   // L: ['1'],
-   // M: ['3'],
-   // N: ['1'],
-   // O: ['1'],
-   // P: ['3'],
-   // Q: ['10'],
-   // R: ['1'],
-   // S: ['1'],
-   // T: ['1'],
-   // U: ['1'],
-   // V: ['4'],
-   // W: ['4'],
-   // X: ['8'],
-   // Y: ['4'],
-   // Z: ['10']
-// };
