@@ -94,7 +94,6 @@ function vowelBonusScorer(word) {
  }
  
 let scrabbleScorer = function(word) {
-	let letterPoints = "";
    let score = 0;
  
 	for (let i = 0; i < word.length; i++) {
@@ -149,8 +148,8 @@ function transform(oldPointStructure) {
          for (i = 0; i < letters.length; i++) {
             // console.log (typeof letters[i], letters[i])
 
-            newKey = letters[i]
-            newKey = newKey.toLowerCase()
+            newKey = letters[i];
+            newKey = newKey.toLowerCase();
             newPointStructure[newKey] = Number(key);
          }
       }
@@ -171,7 +170,7 @@ function runProgram() {
    let algoChoice = scorerPrompt();
 
    let algoName = scoringAlgorithms[Number(algoChoice)].name;
-   let scoreWord = scoringAlgorithms[Number(algoChoice)].scorerFunction(word.toLowerCase());
+   let scoreWord = scoringAlgorithms[Number(algoChoice)].scorerFunction( word.toLowerCase() );
 
    // state algo choice from object with dot notation
    console.log( "\nAlgorithm choice: ", algoName );
