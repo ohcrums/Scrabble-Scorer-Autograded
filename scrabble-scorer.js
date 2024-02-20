@@ -101,7 +101,7 @@ let scrabbleScorer = function(word) {
 	  for (const letterKey in newPointStructure) {
  
 		 if (letterKey.includes(word[i])) {
-			score = Number(score) + Number(newPointStructure[letterKey]) 
+			score = Number(score) + Number(newPointStructure[letterKey]);
 		 }
 	  }
 	}
